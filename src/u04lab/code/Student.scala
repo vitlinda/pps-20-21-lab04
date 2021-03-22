@@ -24,9 +24,9 @@ case class StudentImpl(override val name: String, override val year: Int, privat
 
   override def enrolling(course: Course): Unit = _courses = append(Cons(course, Nil()), _courses)
 
-  override def courses: List[String] =  map(_courses)(c => c.name)
+  override def courses: List[String] =  map(_courses)(_.name)
 
-  override def hasTeacher(teacher: String): Boolean = filter(_courses)( c => c == teacher) != Nil()
+  override def hasTeacher(teacher: String): Boolean = contains(map(_courses)(_.name))(teacher)
 }
 
 object Course {
