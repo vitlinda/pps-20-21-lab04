@@ -6,7 +6,7 @@ import u04lab.code.Lists.List._// import custom List type (not the one in Scala 
 trait Student {
   def name: String
   def year: Int
-  def enrolling(course: Course): Unit // the student participates to a Course
+  def enrolling(course: Course*): Unit // the student participates to a Course
   def courses: List[String] // names of course the student participates to
   def hasTeacher(teacher: String): Boolean // is the student participating to a course of this teacher?
 }
@@ -22,7 +22,9 @@ object Student {
 
 case class StudentImpl(override val name: String, override val year: Int, private var _courses: List[Course]) extends Student {
 
-  override def enrolling(course: Course): Unit = _courses = append(Cons(course, Nil()), _courses)
+  override def enrolling(courses: Course*): Unit = {
+    courses foreach(course => _courses = append(Cons(course, Nil()), _courses))
+  }
 
   override def courses: List[String] =  map(_courses)(_.name)
 

@@ -33,4 +33,16 @@ class StudentTest {
     assertFalse(s1.hasTeacher("Viroli"))
   }
 
+  @Test def enrollingVarArgsTest: Unit ={
+    val cPPS = Course("PPS","Viroli")
+    val cPCD = Course("PCD","Ricci")
+    val cSDR = Course("SDR","D'Angelo")
+    val s1 = Student("mario",2015)
+
+    s1.enrolling(cPPS, cPCD, cSDR)
+
+    assertEquals(Cons("SDR", Cons("PCD", Cons("PPS", Nil()))), s1.courses)
+
+  }
+
 }
