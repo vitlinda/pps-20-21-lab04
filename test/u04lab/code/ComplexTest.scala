@@ -15,6 +15,13 @@ class ComplexTest {
     assertEquals(21.0, c.im)
   }
 
-//  val c2 = a(0) * a(1)
-//  println(c2, c2.re, c2.im) // (ComplexImpl(-10.0,30.0),-10.0,30.0)
+  @Test
+  def testComplexProduct(): Unit = {
+    val a = Array(Complex(10,20), Complex(1,1), Complex(7,0))
+    val c2 = a(0) * a(1)
+
+    assertEquals(ComplexImpl(-10.0, 30.0), c2)
+    assertEquals(-10.0, c2.re)
+    assertEquals(30.0, c2.im)
+  }
 }
