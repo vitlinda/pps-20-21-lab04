@@ -1,6 +1,25 @@
 package u04lab.code
 
+import Optionals._
+import u04lab.code.Streams.Stream
 import scala.util.Random
+
+sealed trait StreamIterator[A]{
+  def next: Option[A]
+}
+object StreamIterator {
+  def apply[A](stream: Stream[A]): StreamIterator[A] = StreamIteratorImpl(stream)
+
+  private case class StreamIteratorImpl[A](private val stream: Stream[A]) extends StreamIterator[A] {
+    private var currentStream = stream
+    def next: Option[A] = currentStream match {
+      case Stream.Cons(h, t) =>
+        currentStream = t()
+        Option.of(h())
+      case _ => Option.empty
+    }
+  }
+}
 
 object Streams extends App {
   import Lists._
@@ -39,7 +58,7 @@ object Streams extends App {
       case _ => Empty()
     }
 
-    def takeWhile[A](stream: Stream[A])(pred: A=>Boolean): Stream[A] = stream match {
+    def takeWhile[A](stream: Stream[A])(pred: A => Boolean): Stream[A] = stream match {
       case Cons(head, tail) if pred(head()) => cons(head(), takeWhile(tail())(pred))
       case _ => Empty()
     }
@@ -57,7 +76,6 @@ object Streams extends App {
     def iterate[A](init: => A)(next: A => A): Stream[A] = cons(init, iterate(next(init))(next))
 
     def generate[A](next: => A): Stream[A] = cons(next, generate(next))
-
   }
 
   import Stream._
@@ -82,3 +100,4 @@ object Streams extends App {
 
 */
 }
+

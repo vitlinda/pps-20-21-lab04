@@ -18,9 +18,13 @@ class PowerIteratorsTest {
     assertEquals(Option.of(9), pi.next());
     assertEquals(Option.of(11), pi.next());
     assertEquals(List.Cons(5, List.Cons(7, List.Cons(9, List.Cons(11,List.Nil())))), pi.allSoFar()); // elementi già prodotti
-    for (i <- 0 until 10) {
+    for (_ <- 0 until 10) {
       pi.next(); // procedo in avanti per un po'..
     }
     assertEquals(Option.of(33), pi.next()); // sono arrivato a 33
   }
+
+
+
+
 }

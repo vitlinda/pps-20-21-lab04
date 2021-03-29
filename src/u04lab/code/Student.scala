@@ -23,9 +23,9 @@ object Student {
 case class StudentImpl(override val name: String, override val year: Int, private var _courses: List[Course]) extends Student {
 
   override def enrolling(courses: Course*): Unit = {
-    courses foreach(course => _courses = append(Cons(course, Nil()), _courses))
+    courses.foreach(course => _courses = append(Cons(course, Nil()), _courses))
   }
-
+  
   override def courses: List[String] =  map(_courses)(_.name)
 
   override def hasTeacher(teacher: String): Boolean = contains(map(_courses)(_.name))(teacher)

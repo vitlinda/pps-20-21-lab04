@@ -21,6 +21,11 @@ object Optionals extends App {
       case _ => orElse
     }
 
+    def get[A](opt: Option[A]): A = opt match {
+      case Some(a) => a
+      case _ => throw new NoSuchElementException
+    }
+
     def flatMap[A,B](opt: Option[A])(f:A => Option[B]): Option[B] = opt match {
       case Some(a) => f(a)
       case _ => None()

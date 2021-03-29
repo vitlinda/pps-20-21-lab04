@@ -69,6 +69,11 @@ object Lists extends App {
       filter(l)(e => e == elem) != Nil()
     }
 
+    def toStream[A](l: List[A]): Streams.Stream[A] = l match {
+      case Cons(h, tail) => Streams.Stream.cons(h, toStream(tail))
+      case Nil() => Streams.Stream.empty()
+    }
+
     def filterByFlatmap[A](l: List[A])(f: A => Boolean): List[A] = ???
 
     def appendByFold[A](l1: List[A], l2: List[A]): List[A] = ???
