@@ -18,7 +18,9 @@ case class PowerIteratorImpl[A](private val stream: Stream[A]) extends PowerIter
 
   override def next(): Option[A] = {
     val nextValue = streamIterator.next
-    list = List.append(list, Stream.toList(Stream.take(Stream.generate(Option.get(nextValue)))(1)))
+    if(nextValue != Option.empty) {
+      list = List.append(list, Stream.toList(Stream.take(Stream.generate(Option.get(nextValue)))(1)))
+    }
     nextValue
   }
 
@@ -43,6 +45,6 @@ class PowerIteratorsFactoryImpl extends PowerIteratorsFactory {
   override def fromList[A](list: List[A]): Unit = PowerIteratorImpl(List.toStream(list))
 
   override def randomBooleans(size: Int): PowerIterator[Boolean] =
-    PowerIteratorImpl(Stream.take(Stream.generate(Math.random() < 0.25))(size))
+    PowerIteratorImpl(Stream.take(Stream.generate(Math.random() < 0.35))(size))
 
 }

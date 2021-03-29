@@ -24,7 +24,16 @@ class PowerIteratorsTest {
     assertEquals(Option.of(33), pi.next()); // sono arrivato a 33
   }
 
-
+  @Test
+  def testRandom() {
+    val pi = factory.randomBooleans(4);
+    val b1 = pi.next()
+    val b2 = pi.next()
+    val b3 = pi.next()
+    val b4 = pi.next()
+    assertEquals(Option.empty, pi.next()); // ne ho già prodotti 4, quindi il prossimo è un opzionale vuoto
+    assertEquals(List.Cons(Option.get(b1),List.Cons(Option.get(b2),List.Cons(Option.get(b3),List.Cons(Option.get(b4), List.Nil())))), pi.allSoFar()) // ho prodotto proprio b1,b2,b3,b4
+  }
 
 
 }
