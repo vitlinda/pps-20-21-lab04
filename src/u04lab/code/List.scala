@@ -34,8 +34,8 @@ object VarArgListTest extends App {
   }
 
   l2 match {
-    case sameTeacher(t) => println(s"$l1 have same teacher $t")
-    case _ => println(s"$l1 have different teachers")
+    case sameTeacher(t) => println(s"$l2 have same teacher $t")
+    case _ => println(s"$l2 have different teachers")
   }
 }
 
