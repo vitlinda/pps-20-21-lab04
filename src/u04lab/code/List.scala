@@ -2,6 +2,44 @@ package u04lab.code
 
 import scala.annotation.tailrec
 
+object VarArgListTest extends App {
+  import Lists._
+  import Optionals._
+  object VarArgList{
+    def apply[E](elems: E*): List[E] = {
+      var list: List[E] = List.Nil()
+      elems.foreach(e => list = List.append(list, List.Cons(e, List.Nil())))
+      list
+    }
+  }
+
+  object sameTeacher{
+    def unapply(l: List[Course]): scala.Option[String] = {
+      val head = Option.get(List.head(l)).teacher
+      if (List.forAll(l)(e => e.teacher == head)) scala.Some(head) else scala.None
+    }
+  }
+
+  val cPPS = Course("PPS","Viroli")
+  val cPCD = Course("PCD","Ricci")
+  val cSDR = Course("SDR","D'Angelo")
+  val cOOP = Course("OOP", "Viroli")
+  
+  val l1 = VarArgList(cPPS, cPCD, cSDR)
+  val l2 = VarArgList(cPPS, cOOP)
+
+  l1 match {
+    case sameTeacher(t) => println(s"$l1 have same teacher $t")
+    case _ => println(s"$l1 have different teachers")
+  }
+
+  l2 match {
+    case sameTeacher(t) => println(s"$l1 have same teacher $t")
+    case _ => println(s"$l1 have different teachers")
+  }
+}
+
+
 object Lists extends App {
 
   // A generic linkedlist
@@ -13,6 +51,13 @@ object Lists extends App {
     case class Nil[E]() extends List[E]
 
     def nil[A]: List[A] = Nil() // smart constructor
+
+    def forAll[A](l: List[A])(pred: A => Boolean): Boolean = length(filter(l)(pred)) == length(l)
+
+    def head[A](l: List[A]): Optionals.Option[A] = l match {
+      case Cons(h, _) => Optionals.Option.Some(h)
+      case _ => Optionals.Option.None[A]
+    }
 
     def sum(l: List[Int]): Int = l match {
       case Cons(h, t) => h + sum(t)
@@ -74,11 +119,14 @@ object Lists extends App {
       case Nil() => Streams.Stream.empty()
     }
 
-    def filterByFlatmap[A](l: List[A])(f: A => Boolean): List[A] = ???
+//    def filterByFlatmap[A](l: List[A])(f: A => Boolean): List[A] = ???
 
-    def appendByFold[A](l1: List[A], l2: List[A]): List[A] = ???
+//    def appendByFold[A](l1: List[A], l2: List[A]): List[A] = ???
 
-    def length(l: List[_]): Int = ???
+    def length(l: List[_]): Int = l match {
+      case Cons(h, t) => 1 + length(t)
+      case _ => 0
+    }
   }
 
   // Note "List." qualification
@@ -102,9 +150,13 @@ object Lists extends App {
   println(foldRightViaFoldleft(lst)(0)(_-_)) // -8
 
   // EXERCISES:
-  println(filterByFlatmap(Cons(10, Cons(20, Nil())))(_>15)) // Cons(20, Nil())
-  println(filterByFlatmap(Cons("a", Cons("bb", Cons("ccc", Nil()))))( _.length <=2)) // Cons("a",Cons("bb", Nil()))
-  println(appendByFold(Cons(3,Cons(7,Nil())), Cons(1,Cons(5,Nil())))) // Cons(3,Cons(7,Cons(1,Cons(5, Nil()))))
+//  println(filterByFlatmap(Cons(10, Cons(20, Nil())))(_>15)) // Cons(20, Nil())
+//  println(filterByFlatmap(Cons("a", Cons("bb", Cons("ccc", Nil()))))( _.length <=2)) // Cons("a",Cons("bb", Nil()))
+//  println(appendByFold(Cons(3,Cons(7,Nil())), Cons(1,Cons(5,Nil())))) // Cons(3,Cons(7,Cons(1,Cons(5, Nil()))))
   println(length(Nil())) // 0
   println(length(Cons(3,Cons(7,Cons(1,Cons(5, Nil())))))) // 4
+
+
+  println(List.forAll(List.Cons(1, List.Cons(1, List.Cons(1, List.Nil()))))(l => l == 1)) //true
+  println(List.forAll(List.Cons(1, List.Cons(2, List.Cons(1, List.Nil()))))(l => l == 1)) //false
 }

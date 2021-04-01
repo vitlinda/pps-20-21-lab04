@@ -32,14 +32,11 @@ case class PowerIteratorImpl[A](private val stream: Stream[A]) extends PowerIter
 
 trait PowerIteratorsFactory {
   def incremental(start: Int, successive: Int => Int): PowerIterator[Int]
-
   def fromList[A](list: List[A]): PowerIterator[A]
-
   def randomBooleans(size: Int): PowerIterator[Boolean]
 }
 
 class PowerIteratorsFactoryImpl extends PowerIteratorsFactory {
-
   override def incremental(start: Int, successive: Int => Int): PowerIterator[Int] = PowerIteratorImpl(Stream.iterate(start)(successive))
 
   override def fromList[A](list: List[A]): PowerIterator[A] = PowerIteratorImpl(List.toStream(list))
