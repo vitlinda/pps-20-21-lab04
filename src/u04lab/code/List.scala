@@ -5,6 +5,7 @@ import scala.annotation.tailrec
 object VarArgListTest extends App {
   import Lists._
   import Optionals._
+
   object VarArgList{
     def apply[E](elems: E*): List[E] = {
       var list: List[E] = List.Nil()
